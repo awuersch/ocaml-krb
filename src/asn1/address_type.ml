@@ -10,8 +10,7 @@ type t =
 | Ipv6
 
 module Alist = struct
-  type nonrec = t
-  type t = nonrec
+  type nonrec t = t
 
   let alist =
     [ Ipv4, 2

@@ -10,8 +10,7 @@ type t =
 | Enterprise
 
 module Alist = struct
-  type nonrec = t
-  type t = nonrec
+  type nonrec t = t
 
   let alist =
     [ Unknown, 0

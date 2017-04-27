@@ -49,8 +49,7 @@ des-cbc-crc                        1             6.2.3
 
 
 module Alist = struct
-  type nonrec = t
-  type t = nonrec
+  type nonrec t = t
 
   let alist =
     [ Des_cbc_crc                       , 1
