@@ -1,4 +1,5 @@
-open Import;;
+open Asn.S
+open Krb_combinators
 
 type t =
   { year : int
@@ -9,16 +10,21 @@ type t =
   ; second : int
   }
 
-module Format = struct
-  type t = Asn_time.t
+module Ast = struct
+  type t = Ptime.t
 
   let asn = generalized_time
 end
 
 (* Per RFC 4120, all kerberos times are UTC, no fractional seconds. *)
-let format_of_t t =
-  { Asn_time.
-    date = (t.year, t.month, t.day)
-  ; time = (t.hour, t.minute, t.second, 0.)
-  ; tz = None
-  }
+let ast_of_t t =
+  let date = t.year, t.month, t.day
+  and time = (t.hour, t.minute, t.second), 0 in
+  match Ptime.of_date_time (date, time) with
+  | None -> failwith "invalid date or invalid time"
+  | Some pt -> pt
+
+(* Per RFC 4120, all kerberos times are UTC, no fractional seconds. *)
+let t_of_ast pt =
+  Ptime.to_date_time pt |> fun ((y, m, d), ((hh, mm, ss), _)) ->
+  { year = y; month = m; day = d; hour = hh; minute = mm; second = ss }

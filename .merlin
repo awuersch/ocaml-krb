@@ -1,4 +1,4 @@
-PKG asn1-combinators cstruct batteries
+PKG asn1-combinators cstruct batteries ptime
 
 S src/asn1
 

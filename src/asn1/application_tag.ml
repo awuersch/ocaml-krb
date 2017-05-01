@@ -68,4 +68,27 @@ let t_of_int_exn int =
   | 30 -> `Krb_error
   | _ -> failwith (Printf.sprintf "Invalid application tag number %d" int)
 
-let tag t asn = Asn.explicit ~cls:`Application (int_of_t t) asn
+let tag t asn = Asn.S.explicit ~cls:`Application (int_of_t t) asn
+
+let string_of_t t =
+  match t with
+  | `Ticket -> "Ticket"
+  | `Authenticator -> "Authenticator"
+  | `Enc_ticket_part -> "Enc_ticket_part"
+  | `As_req -> "As_req"
+  | `As_rep -> "As_rep"
+  | `Tgs_req -> "Tgs_req"
+  | `Tgs_rep -> "Tgs_rep"
+  | `Ap_req -> "Ap_req"
+  | `Ap_rep -> "Ap_rep"
+  | `Reserved16 -> "Reserved16"
+  | `Reserved17 -> "Reserved17"
+  | `Krb_safe -> "Krb_safe"
+  | `Krb_priv -> "Krb_priv"
+  | `Krb_cred -> "Krb_cred"
+  | `Enc_as_rep_part -> "Enc_as_rep_part"
+  | `Enc_tgs_rep_part -> "Enc_tgs_rep_part"
+  | `Enc_ap_rep_part -> "Enc_ap_rep_part"
+  | `Enc_krb_priv_part -> "Enc_krb_priv_part"
+  | `Enc_krb_cred_part -> "Enc_krb_cred_part"
+  | `Krb_error -> "Krb_error"

@@ -1,5 +1,3 @@
-open Import;;
-
 let all =
 [ (module Address_type : Asn1_intf.S)
 ; (module As_req : Asn1_intf.S)

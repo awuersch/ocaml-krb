@@ -1,7 +1,3 @@
-open Batteries;;
-
-include Batteries.Interfaces
-
 module type Intable = sig
   type t
 
@@ -12,7 +8,7 @@ end
 module OrderedType_of_Intable (M : Intable) = struct
   type t = M.t
 
-  let compare t t' = Int.compare (M.int_of_t t) (M.int_of_t t')
+  let compare t t' = compare (M.int_of_t t) (M.int_of_t t')
 end
 
 module type ALIST = sig
@@ -25,9 +21,9 @@ module Intable_of_alist (M : ALIST) : Intable with type t = M.t = struct
   type t = M.t
 
   let t_of_int n =
-    fst (List.find_exn (fun (_, n') -> n = n') Error.Conversion_error M.alist)
+    fst (List.find (fun (_, n') -> n = n') M.alist)
 
   let int_of_t t =
-    snd (List.find_exn (fun (t', _) -> t = t') Error.Conversion_error M.alist)
+    snd (List.find (fun (t', _) -> t = t') M.alist)
 
 end

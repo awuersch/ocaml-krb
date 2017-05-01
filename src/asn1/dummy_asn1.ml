@@ -1,9 +1,9 @@
 type t = int
 
-module Format = struct
+module Ast = struct
   type t = int
 
   let asn = Asn.int
 end
 
-let format_of_t t = t
+let ast_of_t t = t

@@ -1,15 +1,18 @@
-open Import
+open Asn.S
+open Krb_combinators
 
 (* Always used as on optional field - only use if nonempty *)
 type t = Host_address.t list
 
-module Format = struct
-  type t = Host_address.Format.t list
+module Ast = struct
+  type t = Host_address.Ast.t list
 
-  let asn = sequence_of Host_address.Format.asn
+  let asn = sequence_of Host_address.Ast.asn
 end
 
-let format_of_t t =
+let ast_of_t t =
   match t with
   | [] -> failwith "Bug in ASN1 library: tried to use empty host_addresses"
-  | lst -> List.map Host_address.format_of_t lst
+  | lst -> List.map Host_address.ast_of_t lst
+
+let t_of_ast = List.map Host_address.t_of_ast

@@ -1,4 +1,5 @@
-open Import;;
+open Asn.S
+open Krb_combinators
 
 let all_types = Types.all
 
@@ -10,14 +11,14 @@ let run () =
   let results =
     List.map (fun tp ->
       let module Type = (val tp : Asn1_intf.S) in
-      let asn = Type.Format.asn in
+      let asn = Type.Ast.asn in
       let codecs = List.map (fun er -> Asn.codec er asn) encoding_rules in
       let input = Asn.random asn in
       let test_results =
         List.map (fun codec ->
           match Asn.decode codec (Asn.encode codec input) with
-          | Some (x, _) -> x = input
-          | _ -> false)
+          | Ok (ast, _) -> ast = input
+          | Error err -> error err)
           codecs
       in
       List.for_all (fun x -> x) test_results)

@@ -1,8 +1,10 @@
 type t = string
 
-module Format = struct
+module Ast = struct
   type t = string
-  let asn = Asn.ia5_string
+  let asn = Asn.S.general_string
 end
 
-let format_of_t t = t
+let ast_of_t t = t
+
+let t_of_ast ast = ast

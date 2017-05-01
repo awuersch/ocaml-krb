@@ -1,4 +1,5 @@
-open Import;;
+open Asn.S
+open Krb_combinators
 
 module Datum = struct
   type t =
@@ -6,25 +7,32 @@ module Datum = struct
     ; ad_data : Octet_string.t
     }
 
-  module Format = struct
-    type t = Krb_int32.Format.t * Octet_string.Format.t
+  module Ast = struct
+    type t = Krb_int32.Ast.t * Octet_string.Ast.t
 
     let asn =
       sequence2
-        (tag_required ~label:"ad_type" 0 Krb_int32.Format.asn)
-        (tag_required ~label:"ad_data" 1 Octet_string.Format.asn)
+        (tag_required ~label:"ad_type" 0 Krb_int32.Ast.asn)
+        (tag_required ~label:"ad_data" 1 Octet_string.Ast.asn)
   end
 
-  let format_of_t t =
-    Krb_int32.format_of_t t.ad_type, Octet_string.format_of_t t.ad_data
+  let ast_of_t t =
+    Krb_int32.ast_of_t t.ad_type, Octet_string.ast_of_t t.ad_data
+
+  let t_of_ast (a, b) =
+    { ad_type = Krb_int32.t_of_ast a
+    ; ad_data = Octet_string.t_of_ast b
+    }
 end
 
 type t = Datum.t list
 
-module Format = struct
-  type t = Datum.Format.t list
+module Ast = struct
+  type t = Datum.Ast.t list
 
-  let asn = sequence_of Datum.Format.asn
+  let asn = sequence_of Datum.Ast.asn
 end
 
-let format_of_t = List.map Datum.format_of_t
+let ast_of_t = List.map Datum.ast_of_t
+
+let t_of_ast = List.map Datum.t_of_ast
